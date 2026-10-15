@@ -8,7 +8,7 @@ adds the small amount of metadata needed by OpenAerialMap.
 The current extension is:
 
 ```text
-https://docs.imagery.hotosm.org/oam/v0.3.0/schema.json
+https://docs.imagery.hotosm.org/oam/v0.4.0/schema.json
 ```
 
 Every Item is validated while it is built. Invalid Items are reported and are
@@ -97,6 +97,18 @@ Set by the uploader and legacy OAM sync. Third-party imports omit these fields.
 The uploading account may differ from the imagery producer recorded in
 `oam:producer_name` and `providers`.
 
+### Owner
+
+| Field                     | Purpose                                               |
+| ------------------------- | ----------------------------------------------------- |
+| `properties.oam:owner_id` | Current owner as `provider\|id`. Changes on transfer. |
+
+`oam:uploader_id` records who uploaded an Item and never changes;
+`oam:owner_id` records who controls it now. It uses the same prefixes, plus
+`hotosm-org|` for a HOT Login organisation. Legacy Items are owned by their
+`oam-legacy|` account until it is claimed; anonymous uploads have no owner. See
+[ADR 0011](../../decisions/0011-imagery-ownership.md).
+
 ### Assets and links
 
 | Field                         | Purpose                                                 |
@@ -132,7 +144,8 @@ available.
 
 | Version  | Notes                                                      |
 | -------- | ---------------------------------------------------------- |
-| `v0.3.0` | Current version. Supports all `oam:` fields listed above.  |
+| `v0.4.0` | Current version. Supports all `oam:` fields listed above.  |
+| `v0.3.0` | Everything except `oam:owner_id`.                          |
 | `v0.2.0` | Everything except the `oam:uploader_*` fields.             |
 | `v0.1.0` | Only supports `oam:platform_type` and `oam:producer_name`. |
 

@@ -63,6 +63,10 @@ class OamMetadata:
     # Link to static metadata this was derived from
     metadata_url: str
 
+    # Current owner as `provider|id`: a user or an organisation. Unlike the
+    # uploader, it changes when the imagery is transferred.
+    owner_id: str | None = None
+
     # Uploading account as `provider|id`.
     uploader_id: str | None = None
     # Account display name or username.
@@ -77,6 +81,7 @@ class OamMetadata:
         self._sanitize_platform()
         self._sanitize_sensor()
         self._sanitize_uploader()
+        self._sanitize_owner()
         return self
 
     def _sanitize_acquisition_datetime(self):
@@ -109,6 +114,10 @@ class OamMetadata:
         self.uploader_name = (self.uploader_name or "").strip() or None
         email = (self.uploader_email or "").strip().lower()
         self.uploader_email = email if _EMAIL.match(email) else None
+
+    def _sanitize_owner(self):
+        """Drop a blank owner."""
+        self.owner_id = (self.owner_id or "").strip() or None
 
     def _sanitize_sensor(self):
         """Sanitize bad sensor values."""
